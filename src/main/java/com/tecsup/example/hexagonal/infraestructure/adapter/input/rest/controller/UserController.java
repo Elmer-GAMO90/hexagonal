@@ -2,15 +2,16 @@ package com.tecsup.example.hexagonal.infraestructure.adapter.input.rest.controll
 
 import com.tecsup.example.hexagonal.application.port.input.UserService;
 import com.tecsup.example.hexagonal.domain.exception.InvalidUserDataException;
+import com.tecsup.example.hexagonal.domain.exception.UserLastNameFoundException;
 import com.tecsup.example.hexagonal.domain.exception.UserNotFoundException;
 import com.tecsup.example.hexagonal.domain.model.User;
 import com.tecsup.example.hexagonal.infraestructure.adapter.input.rest.dto.UserRequest;
 import com.tecsup.example.hexagonal.infraestructure.adapter.input.rest.dto.UserResponse;
 import com.tecsup.example.hexagonal.infraestructure.adapter.output.persistence.mapper.UserMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -28,6 +29,7 @@ public class UserController {
 
     //Crear usuario
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> createUser(@RequestBody(required = false) UserRequest request) {
         try {
             if (request == null) {
@@ -55,6 +57,7 @@ public class UserController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity <UserResponse> getUser(@PathVariable Long id) {
         //log.info("Retrieving user with id: {}", id);
         try {
@@ -67,6 +70,24 @@ public class UserController {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             log.error("Error fetching user with ID: {}", id, e);
+            return ResponseEntity.badRequest().build();
+
+        }
+    }
+
+    @GetMapping("/name/{lastname}")
+    public ResponseEntity <UserResponse> getUser(@PathVariable String lastname) {
+        //log.info("Retrieving user with id: {}", id);
+        try {
+
+            User user = this.userService.findUserLastname(lastname);
+            UserResponse response = this.userMapper.toResponse(user);
+            return ResponseEntity.ok(response);
+        } catch (UserLastNameFoundException e) {
+            log.warn("User not found with lastName: {}", lastname);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error("Error fetching user with ID: {}", lastname, e);
             return ResponseEntity.badRequest().build();
 
         }

@@ -4,7 +4,6 @@ import com.tecsup.example.hexagonal.application.port.output.UserRepository;
 import com.tecsup.example.hexagonal.domain.model.User;
 import com.tecsup.example.hexagonal.infraestructure.adapter.output.persistence.entity.UserEntity;
 import com.tecsup.example.hexagonal.infraestructure.adapter.output.persistence.mapper.UserMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +40,19 @@ public class UserRepositoryAdapter implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
+
         return this.jpaRepository.findById(id).map(this.userMapper::toDomain);
     }
+
+    @Override
+    public Optional<User> findByLastname(String lastName) {
+        return this.jpaRepository.findByLastname(lastName).map(this.userMapper::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return this.jpaRepository.findByEmail(email).map(this.userMapper::toDomain);
+    }
+
+
 }

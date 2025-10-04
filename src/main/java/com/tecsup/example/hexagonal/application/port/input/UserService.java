@@ -7,4 +7,6 @@ public interface UserService {
     User createUser(User newUser);
 
     User findUser(Long id);
+
+    User findUserLastname(String lastName);
 }

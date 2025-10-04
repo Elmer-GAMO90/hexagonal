@@ -1,18 +1,21 @@
 package com.tecsup.example.hexagonal.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
     private Long id;
     private String name;
+    private String lastname;
     private String email;
+    private String password;
+    private boolean enabled;
+
+    private Role role;
 
     //Logica de negocio
     //Es una regla de negocio que verifica si el campo email del usuario es válido bajo ciertas condiciones simples.
@@ -35,9 +38,15 @@ public class User {
                 name.length() >= 2;
     }
 
+    public boolean hasValidLastname() {
+        return lastname != null &&
+                !lastname.trim().isEmpty() &&
+                lastname.length() >= 2;
+    }
+
     //Para ver cuando envias nulos
     @Override
     public String toString() {
-        return "User{id=" + id + ", name='" + name + "', email='" + email + "'}";
+        return "User{id=" + id + ", name='" + name + "', lastname='" + lastname + "', email='" + email + "', password='" + password + "'}";
     }
 }

@@ -1,8 +1,18 @@
--- Insert sample data for development and testing
+-- ============================================================================
+-- V3__ADD_OAUTH_FIELDS.sql
+-- Description: Add OAuth and authentication related columns
+-- ============================================================================
 
-INSERT INTO users (name, email, created_at) VALUES
-                                                ('David Galvez', 'david.galvez@example.com', NOW()),
-                                                ('Rocio Chavez', 'rocio.chavez@example.com', NOW()),
-                                                ('Pedro Acosta', 'pedro.acosta@example.com', NOW()),
-                                                ('Marisol Ugarte', 'marisol.ugarte@example.com', NOW()),
-                                                ('Juan Diaz', 'juan.diaz@example.com', NOW());
+ALTER TABLE users
+    ADD COLUMN password VARCHAR(100) DEFAULT NULL,
+ADD COLUMN google_id VARCHAR(255) DEFAULT NULL,
+ADD COLUMN provider VARCHAR(10) DEFAULT 'LOCAL' NOT NULL,
+ADD COLUMN profile_picture VARCHAR(500) DEFAULT NULL,
+ADD COLUMN enabled BOOLEAN DEFAULT TRUE NOT NULL;
+
+-- Add unique constraint for google_id
+ALTER TABLE users ADD CONSTRAINT uk_users_google_id UNIQUE (google_id);
+
+-- Add indexes for OAuth fields
+CREATE INDEX idx_users_google_id ON users(google_id);
+CREATE INDEX idx_users_provider ON users(provider);

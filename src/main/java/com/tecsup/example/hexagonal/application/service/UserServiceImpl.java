@@ -3,9 +3,10 @@ package com.tecsup.example.hexagonal.application.service;
 import com.tecsup.example.hexagonal.application.port.input.UserService;
 import com.tecsup.example.hexagonal.application.port.output.UserRepository;
 import com.tecsup.example.hexagonal.domain.exception.InvalidUserDataException;
+import com.tecsup.example.hexagonal.domain.exception.UserLastNameFoundException;
 import com.tecsup.example.hexagonal.domain.exception.UserNotFoundException;
+import com.tecsup.example.hexagonal.domain.model.Role;
 import com.tecsup.example.hexagonal.domain.model.User;
-import lombok.RequiredArgsConstructor;
 
 //@RequiredArgsConstructor para implementar el constructor por la anotación
 public class UserServiceImpl implements UserService {
@@ -20,6 +21,11 @@ public class UserServiceImpl implements UserService {
     public User createUser(User newUser) {
         //Validacion logica puede ser agregado aqui
         validateUserInput(newUser);
+
+        // Set default values
+        if (newUser.getRole() == null)
+            newUser.setRole(Role.USER);
+
         //Guardar el usuario usando el repositorio
         User user = this.userRepository.save(newUser);
         //user.setName("Margot"); //Garbage line for testing propurse
@@ -37,10 +43,23 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User findUserLastname(String lastName) {
+        if (lastName == null || lastName.isEmpty()) {
+            throw new IllegalArgumentException("Invalid user lastName");
+        }
+        User user = this.userRepository.findByLastname(lastName)
+                .orElseThrow(() -> new UserLastNameFoundException("lastName"));
+        return user;
+    }
+
     private void validateUserInput(User newUser) {
 
         if (!newUser.hasValidName())
-            throw new InvalidUserDataException("Invalid email");
+            throw new InvalidUserDataException("Invalid name");
+
+        if (!newUser.hasValidLastname())
+            throw new InvalidUserDataException("Invalid lastName");
 
         if (!newUser.hasValidEmail())
             throw new InvalidUserDataException("Invalid email");

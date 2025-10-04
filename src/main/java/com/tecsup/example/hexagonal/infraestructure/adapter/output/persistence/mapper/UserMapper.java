@@ -23,6 +23,7 @@ public interface UserMapper {
      * @return
      */
     UserEntity toEntity(User domain);
+
     /**
      * Convert UserEntity to User domain
      * @param entity
@@ -30,8 +31,10 @@ public interface UserMapper {
      */
     User toDomain(UserEntity entity);
 
+
     @Mapping(target = "id", ignore = true) // New users don't have ID
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "lastname", source = "lastname")
     @Mapping(target = "email", source = "email")
     User toDomain(UserRequest request);
 

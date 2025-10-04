@@ -11,4 +11,8 @@ public interface UserRepository {
     // y para dejar explícito en el contrato de la interfaz que ese método puede devolver o no un resultado.
     Optional<User> findById(Long id);
 
+    Optional<User> findByLastname(String lastName);
+
+    Optional<User> findByEmail(String email);
+
 }

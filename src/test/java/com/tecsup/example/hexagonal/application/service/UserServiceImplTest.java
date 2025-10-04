@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
+
     //Lo que vamos a mockear es el UserRepository
     @Mock
     private UserRepository userRepository;
@@ -37,11 +38,22 @@ class UserServiceImplTest {
 
         Long ID = 50L;
         String NAME = "Juana";
+        String LASTNAME = "Arco";
         String EMAIL = "juana@demo.com";
 
         // Initial Condition
-        User newUser = new User(null, NAME, EMAIL); // UserRequest
-        User savedUser = new User(ID, NAME, EMAIL);  // Save UserEntity
+        User newUser = User.builder()
+                .name(NAME)
+                .lastname(LASTNAME)
+                .email(EMAIL)
+                .build(); // new User (NAME, LASTNAME, EMAIL)
+
+        User savedUser = User.builder()
+                .id(ID)
+                .name(NAME)
+                .lastname(LASTNAME)
+                .email(EMAIL)
+                .build();
 
         // Mocking the repository behavior
         when(userRepository.save(newUser)).thenReturn(savedUser);
@@ -53,19 +65,26 @@ class UserServiceImplTest {
         assertNotNull(realUser);
         assertEquals(ID, realUser.getId());
         assertEquals(NAME, realUser.getName());
+        assertEquals(LASTNAME, realUser.getLastname());
         assertEquals(EMAIL, realUser.getEmail());
+
     }
 
     @Test
     void findUser() {
 
-        //Definir los datos
-        Long ID = 100l;
+        Long ID = 100L;
         String NAME = "Jaime";
-        String EMAIL = "jaime@demo.com";
+        String LASTNAME = "Juarez";
+        String EMAIL = "jaime.juarez@demo.com";
 
         // Initial Condition
-        User existingUser = new User(ID, NAME, EMAIL);
+        User existingUser = User.builder()
+                .id(ID)
+                .name(NAME)
+                .lastname(LASTNAME)
+                .email(EMAIL)
+                .build(); // new User(ID, NAME, EMAIL);
 
         // Mocking the repository behavior
         when(userRepository.findById(100L)).thenReturn(Optional.of(existingUser));
@@ -79,6 +98,7 @@ class UserServiceImplTest {
         // hope values, real values
         assertEquals(ID, realUser.getId());
         assertEquals(NAME, realUser.getName());
+        assertEquals(LASTNAME, realUser.getLastname());
         assertEquals(EMAIL, realUser.getEmail());
 
     }

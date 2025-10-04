@@ -17,8 +17,21 @@ public class UserEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(length = 100)
+    private String lastname;
+
     @Column(nullable = false, length = 150)
     private String email;
+
+
+    private String password;
+
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private RoleEntity role;
 
 
 }
