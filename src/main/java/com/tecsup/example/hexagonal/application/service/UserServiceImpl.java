@@ -2,11 +2,11 @@ package com.tecsup.example.hexagonal.application.service;
 
 import com.tecsup.example.hexagonal.application.port.input.UserService;
 import com.tecsup.example.hexagonal.application.port.output.UserRepository;
-import com.tecsup.example.hexagonal.domain.exception.InvalidUserDataException;
-import com.tecsup.example.hexagonal.domain.exception.UserLastNameFoundException;
-import com.tecsup.example.hexagonal.domain.exception.UserNotFoundException;
+import com.tecsup.example.hexagonal.domain.exception.*;
 import com.tecsup.example.hexagonal.domain.model.Role;
 import com.tecsup.example.hexagonal.domain.model.User;
+
+import java.util.List;
 
 //@RequiredArgsConstructor para implementar el constructor por la anotación
 public class UserServiceImpl implements UserService {
@@ -25,6 +25,8 @@ public class UserServiceImpl implements UserService {
         // Set default values
         if (newUser.getRole() == null)
             newUser.setRole(Role.USER);
+
+        newUser.setEnabled(true);
 
         //Guardar el usuario usando el repositorio
         User user = this.userRepository.save(newUser);
@@ -53,6 +55,35 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User findUserDni(String dni) {
+        if (dni == null || dni.isEmpty()) {
+            throw new IllegalArgumentException("Invalid user dni");
+        }
+        User user = this.userRepository.findByDni(dni)
+                .orElseThrow(() -> new UserDniNotFoundException("dni"));
+        return user;
+    }
+
+    @Override
+    public User findUserAge(Integer age) {
+        if (age == null || age <= 0) {
+            throw new IllegalArgumentException("Invalid user age");
+        }
+        User user = this.userRepository.findByAge(age)
+                .orElseThrow(() -> new UserAgeNotFoundException("age"));
+        return user;
+    }
+
+    @Override
+    public List<User> findUsersYoungerThan18() {
+        List<User> minors = this.userRepository.findUsersYoungerThan18();
+        if (minors.isEmpty()) {
+            throw new UserAgeNotFoundException("No users found under 18");
+        }
+        return minors;
+    }
+
     private void validateUserInput(User newUser) {
 
         if (!newUser.hasValidName())
@@ -63,6 +94,12 @@ public class UserServiceImpl implements UserService {
 
         if (!newUser.hasValidEmail())
             throw new InvalidUserDataException("Invalid email");
+
+        if (!newUser.hasValidDni())
+            throw new InvalidUserDataException("Invalid dni");
+
+        if (!newUser.hasValidAge())
+            throw new InvalidUserDataException("Invalid age");
 
 
     }

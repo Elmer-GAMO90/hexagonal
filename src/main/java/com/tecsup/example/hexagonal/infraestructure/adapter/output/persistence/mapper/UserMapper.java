@@ -35,7 +35,10 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true) // New users don't have ID
     @Mapping(target = "name", source = "name")
     @Mapping(target = "lastname", source = "lastname")
+    @Mapping(target = "lastmattern", source = "lastmattern")
     @Mapping(target = "email", source = "email")
+    @Mapping(target = "dni", source = "dni")
+    @Mapping(target = "age", source = "age")
     User toDomain(UserRequest request);
 
     UserResponse toResponse(User createUser);

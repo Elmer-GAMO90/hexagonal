@@ -6,12 +6,17 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//Evita la necesidad de escribir manualmente constructores con muchos parámetros o métodos para cada campo
 @Builder
 public class User {
     private Long id;
     private String name;
     private String lastname;
+    private String lastmattern;
     private String email;
+    private String dni;
+    private Integer age;
+    private String phonenumber;
     private String password;
     private boolean enabled;
 
@@ -42,6 +47,24 @@ public class User {
         return lastname != null &&
                 !lastname.trim().isEmpty() &&
                 lastname.length() >= 2;
+    }
+
+    public boolean hasValidLastmattern() {
+        return lastmattern != null &&
+                !lastmattern.trim().isEmpty() &&
+                lastmattern.length() >= 2;
+    }
+
+    public boolean hasValidDni() {
+        return dni != null &&
+                !dni.trim().isEmpty() &&
+                dni.length() <= 8;
+    }
+
+    public boolean hasValidAge() {
+        return age != null &&
+                age > 0 &&
+                age <= 120;
     }
 
     //Para ver cuando envias nulos

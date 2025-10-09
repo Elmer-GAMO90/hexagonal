@@ -8,7 +8,7 @@ public class PasswordGenerator {
     public static void main(String[] args) {
         //Este es un encriptador
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-        String passwordRaw = "nose123";
+        String passwordRaw = "juan.diaz@example.com";
         String passwordEncoded = encoder.encode(passwordRaw);
         //log.info("{} -> {}", passwordRaw, passwordEncoded);
         System.out.println(passwordEncoded);

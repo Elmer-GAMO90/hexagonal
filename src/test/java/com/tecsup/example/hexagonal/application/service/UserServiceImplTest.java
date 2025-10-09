@@ -39,20 +39,29 @@ class UserServiceImplTest {
         Long ID = 50L;
         String NAME = "Juana";
         String LASTNAME = "Arco";
+        String LASTMATTERN = "Arias";
         String EMAIL = "juana@demo.com";
+        String DNI = "00460355";
+        Integer AGE = 32;
 
         // Initial Condition
         User newUser = User.builder()
                 .name(NAME)
                 .lastname(LASTNAME)
+                .lastmattern(LASTMATTERN)
                 .email(EMAIL)
+                .dni(DNI)
+                .age(AGE)
                 .build(); // new User (NAME, LASTNAME, EMAIL)
 
         User savedUser = User.builder()
                 .id(ID)
                 .name(NAME)
                 .lastname(LASTNAME)
+                .lastmattern(LASTMATTERN)
                 .email(EMAIL)
+                .dni(DNI)
+                .age(AGE)
                 .build();
 
         // Mocking the repository behavior
@@ -66,7 +75,10 @@ class UserServiceImplTest {
         assertEquals(ID, realUser.getId());
         assertEquals(NAME, realUser.getName());
         assertEquals(LASTNAME, realUser.getLastname());
+        assertEquals(LASTMATTERN, realUser.getLastmattern());
         assertEquals(EMAIL, realUser.getEmail());
+        assertEquals(DNI, realUser.getDni());
+        assertEquals(AGE, realUser.getAge());
 
     }
 

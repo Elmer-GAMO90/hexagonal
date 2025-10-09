@@ -4,7 +4,7 @@
 -- ============================================================================
 
 ALTER TABLE users
-    ADD COLUMN password VARCHAR(100) DEFAULT NULL,
+    ADD COLUMN password VARCHAR(255) DEFAULT NULL,
 ADD COLUMN google_id VARCHAR(255) DEFAULT NULL,
 ADD COLUMN provider VARCHAR(10) DEFAULT 'LOCAL' NOT NULL,
 ADD COLUMN profile_picture VARCHAR(500) DEFAULT NULL,

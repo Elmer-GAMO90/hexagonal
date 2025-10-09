@@ -13,8 +13,9 @@ CREATE TABLE roles (
 
 -- Insert default roles
 INSERT INTO roles (name, description) VALUES
-                                          ('USER', 'Regular user with basic permissions'),
-                                          ('ADMIN', 'Administrator with full permissions');
+                                          ('MONITOR', 'Observe with permissions the state of activities or connections within a system'),
+                                          ('ADMIN', 'Administrator with full permissions'),
+                                            ('USER', 'Regular user with basic permissions');
 
 -- Add role_id and last_login to users table
 ALTER TABLE users

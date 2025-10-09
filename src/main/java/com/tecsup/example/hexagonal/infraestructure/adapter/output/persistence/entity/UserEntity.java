@@ -20,9 +20,20 @@ public class UserEntity {
     @Column(length = 100)
     private String lastname;
 
+    @Column(length = 100)
+    private String lastmattern;
+
     @Column(nullable = false, length = 150)
     private String email;
 
+    @Column(length = 8, nullable = false)
+    private String dni;
+
+    @Column(nullable = false)
+    private Integer age;
+
+    @Column(length = 20)
+    private String phonenumber;
 
     private String password;
 

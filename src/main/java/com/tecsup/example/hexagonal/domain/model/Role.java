@@ -11,10 +11,10 @@ import lombok.*;
 public class Role {
 
     //Generar constantes
-    public static final Role USER = Role.builder().id(1L).name("USER").build();
-    public static final Role ADMIN = Role.builder().id(2L).name("ADMIN").build();
-    public static final Role MODERATOR = Role.builder().id(3L).name("MODERATOR").build();
 
+    public static final Role MONITOR = Role.builder().id(1L).name("MONITOR").build();
+    public static final Role ADMIN = Role.builder().id(2L).name("ADMIN").build();
+    public static final Role USER = Role.builder().id(3L).name("USER").build();
 
     private Long id;
     private String name;

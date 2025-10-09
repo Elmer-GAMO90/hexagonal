@@ -1,7 +1,9 @@
 package com.tecsup.example.hexagonal.application.port.output;
 
 import com.tecsup.example.hexagonal.domain.model.User;
+import com.tecsup.example.hexagonal.infraestructure.adapter.output.persistence.entity.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
@@ -14,5 +16,11 @@ public interface UserRepository {
     Optional<User> findByLastname(String lastName);
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByDni(String dni);
+
+    Optional<User> findByAge(Integer age);
+
+    List<User> findUsersYoungerThan18();
 
 }

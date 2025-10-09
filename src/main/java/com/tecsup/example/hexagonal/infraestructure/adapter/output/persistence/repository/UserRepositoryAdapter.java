@@ -7,7 +7,9 @@ import com.tecsup.example.hexagonal.infraestructure.adapter.output.persistence.m
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Repository
@@ -52,6 +54,24 @@ public class UserRepositoryAdapter implements UserRepository {
     @Override
     public Optional<User> findByEmail(String email) {
         return this.jpaRepository.findByEmail(email).map(this.userMapper::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByDni(String dni) {
+        return this.jpaRepository.findByDni(dni).map(this.userMapper::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByAge(Integer age) {
+        return this.jpaRepository.findByAge(age).map(this.userMapper::toDomain);
+    }
+
+    @Override
+    public List<User> findUsersYoungerThan18() {
+        return this.jpaRepository.findByAgeLessThan(18)
+                .stream()
+                .map(this.userMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
 

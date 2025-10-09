@@ -43,30 +43,40 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
 
-    //@Test
+    @Test
+    @WithMockUser(roles = "ADMIN")
     void createUser()  throws Exception {
 
         Long ID = 50L;
         String NAME = "Juana";
         String LASTNAME = "Arco";
+        String LASTMATTERN = "Arias";
         String EMAIL = "juana@demo.com";
+        String DNI = "00460258";
+        Integer AGE = 22;
 
         // Initial Condition
-        UserRequest request = new UserRequest(NAME, LASTNAME, EMAIL);
+        UserRequest request = new UserRequest(NAME, LASTNAME, LASTMATTERN, EMAIL, DNI, AGE);
         User newUser =  User.builder()
                 .name(NAME)
-                .name(LASTNAME)
+                .lastname(LASTNAME)
+                .lastmattern(LASTMATTERN)
                 .email(EMAIL)
+                .dni(DNI)
+                .age(AGE)
                 .build(); //new User(null, NAME, EMAIL); // UserRequest
         User savedUser = User.builder()
                 .id(ID)
                 .name(NAME)
-                .name(LASTNAME)
+                .lastname(LASTNAME)
+                .lastmattern(LASTMATTERN)
                 .email(EMAIL)
+                .dni(DNI)
+                .age(AGE)
                 .build();
 
         //new User(ID, NAME, EMAIL);  // Save UserEntity
-        UserResponse response   = new UserResponse(ID, NAME, LASTNAME, EMAIL);
+        UserResponse response   = new UserResponse(ID, NAME, LASTNAME, LASTMATTERN, EMAIL, DNI, AGE);
 
 
         // Mocking the repository behavior
@@ -82,7 +92,11 @@ class UserControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(ID))
                 .andExpect(jsonPath("$.name").value(NAME))
+                .andExpect(jsonPath("$.lastname").value(LASTNAME))
+                .andExpect(jsonPath("$.lastmattern").value(LASTMATTERN))
                 .andExpect(jsonPath("$.email").value(EMAIL))
+                .andExpect(jsonPath("$.dni").value(DNI))
+                .andExpect(jsonPath("$.age").value(AGE))
                 .andDo(print());
 
     }

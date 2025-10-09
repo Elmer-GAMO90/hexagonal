@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 public class UserRequest {
     private String name;
     private String lastname;
+    private String lastmattern;
     private String email;
+    private String dni;
+    private Integer age;
+
 
 }
